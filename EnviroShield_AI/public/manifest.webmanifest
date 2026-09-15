@@ -1,0 +1,16 @@
+{
+  "name": "EnviroShield AI — Offline Flood Evacuation Navigator",
+  "short_name": "EnviroShield AI",
+  "description": "Offline-first flood evacuation: stored maps, flood risk zones, safest-route navigation and emergency mode with no network.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0f14",
+  "theme_color": "#0b0f14",
+  "icons": [
+    { "src": "/logo.jpg", "sizes": "192x192", "type": "image/jpeg", "purpose": "any" },
+    { "src": "/logo.jpg", "sizes": "512x512", "type": "image/jpeg", "purpose": "any" },
+    { "src": "/logo.jpg", "sizes": "512x512", "type": "image/jpeg", "purpose": "maskable" }
+  ]
+}

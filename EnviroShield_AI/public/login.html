@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EnviroShield AI — Login</title>
+
+    <script>
+      const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID';
+    </script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <style>
+      :root {
+        --bg: #ffffff;
+        --card-bg: #ffffff;
+        --text-primary: #111827;
+        --text-secondary: #4b5563;
+        --text-tertiary: #9ca3af;
+        --border-color: #e5e7eb;
+        --primary: #000000;
+        --primary-hover: #1f2937;
+        --error-bg: #fef2f2;
+        --error-text: #b91c1c;
+        --error-border: #fca5a5;
+        --success-bg: #f0fdf4;
+        --success-text: #15803d;
+        --success-border: #86efac;
+        --input-bg: #f9fafb;
+        --focus-ring: rgba(0, 0, 0, 0.1);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg);
+        color: var(--text-primary);
+        display: flex;
+        flex-direction: column;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .mobile-padding {
+        padding: 24px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .login-container {
+        max-width: 420px;
+        width: 100%;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 40px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: -0.02em;
+        justify-content: center;
+      }
+
+      .brand img {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+      }
+
+      .title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin: 0 0 8px;
+        letter-spacing: -0.03em;
+        text-align: center;
+      }
+
+      .subtitle {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin: 0 0 32px;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      .alert {
+        display: none;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        margin-bottom: 24px;
+        border: 1px solid transparent;
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-4px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .alert.show { display: block; }
+
+      .alert.error {
+        background-color: var(--error-bg);
+        color: var(--error-text);
+        border-color: var(--error-border);
+      }
+
+      .alert.success {
+        background-color: var(--success-bg);
+        color: var(--success-text);
+        border-color: var(--success-border);
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      input[type="email"],
+      input[type="password"],
+      input[type="text"] {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        background-color: var(--input-bg);
+        font-size: 1rem;
+        color: var(--text-primary);
+        transition: all 0.2s ease;
+      }
+
+      input::placeholder {
+        color: var(--text-tertiary);
+      }
+
+      input:focus {
+        outline: none;
+        border-color: var(--primary);
+        background-color: #fff;
+        box-shadow: 0 0 0 3px var(--focus-ring);
+      }
+
+      input.input-error {
+        border-color: var(--error-border);
+        background-color: var(--error-bg);
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 16px;
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        font-weight: 600;
+        font-size: 0.875rem;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .field-error-text {
+        font-size: 0.8rem;
+        color: var(--error-text);
+        display: none;
+        margin-top: 4px;
+      }
+      .field-error.show .field-error-text {
+        display: block;
+      }
+
+      .forgot-password {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 500;
+        text-align: right;
+        margin-top: -8px;
+      }
+
+      .forgot-password:hover {
+        color: var(--primary);
+      }
+
+      .btn-primary {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 16px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.1s, background-color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background-color: var(--primary-hover);
+      }
+
+      .btn-primary:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+
+      .spinner {
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        display: none;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 32px 0;
+        color: var(--text-tertiary);
+        font-size: 0.875rem;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .divider:not(:empty)::before { margin-right: 16px; }
+      .divider:not(:empty)::after { margin-left: 16px; }
+
+      .btn-google {
+        background-color: white;
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        border-radius: 12px;
+        padding: 14px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        transition: background-color 0.2s;
+      }
+
+      .btn-google:hover {
+        background-color: var(--input-bg);
+      }
+
+      .footer-links {
+        margin-top: 40px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      .footer-links a {
+        color: var(--primary);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .footer-links a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="mobile-padding">
+      <div class="login-container">
+
+        <div class="brand">
+          <img src="logo.jpg" alt="EnviroShield AI logo" />
+          EnviroShield AI
+        </div>
+
+        <h1 class="title">Welcome back</h1>
+        <p class="subtitle">Enter your details to access your dashboard.</p>
+
+        <div id="form-alert" class="alert" role="alert" aria-live="polite"></div>
+
+        <form id="login-form" novalidate>
+          <div class="field-error" id="email-field">
+            <div class="field-group">
+              <label for="email">Email</label>
+              <div class="input-wrapper">
+                <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+              </div>
+            </div>
+            <div class="field-error-text"></div>
+          </div>
+
+          <div class="field-error" id="password-field">
+            <div class="field-group">
+              <label for="password">Password</label>
+              <div class="input-wrapper">
+                <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
+                <button type="button" class="toggle-password" id="toggle-pw" aria-label="Show password">Show</button>
+              </div>
+            </div>
+            <div class="field-error-text"></div>
+          </div>
+
+          <a href="#" class="forgot-password" onclick="return false;">Forgot password?</a>
+
+          <button type="submit" class="btn-primary" id="submit-btn">
+            <span class="spinner" id="spinner"></span>
+            <span id="btn-label">Log In</span>
+          </button>
+        </form>
+
+        <div class="divider">or</div>
+
+        <button class="btn-google" id="google-btn" type="button">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"></path>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"></path>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"></path>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"></path>
+          </svg>
+          Continue with Google
+        </button>
+
+        <div class="footer-links">
+          Don't have an account? <a href="#" onclick="return false;">Sign up</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById('login-form');
+      const emailEl = document.getElementById('email');
+      const passwordEl = document.getElementById('password');
+      const togglePassword = document.getElementById('toggle-pw');
+      const submitButton = document.getElementById('submit-btn');
+      const spinner = document.getElementById('spinner');
+      const buttonLabel = document.getElementById('btn-label');
+      const alertBox = document.getElementById('form-alert');
+
+      togglePassword.addEventListener('click', function () {
+        if (passwordEl.type === 'password') {
+          passwordEl.type = 'text';
+          togglePassword.textContent = 'Hide';
+        } else {
+          passwordEl.type = 'password';
+          togglePassword.textContent = 'Show';
+        }
+      });
+
+      function showError(fieldId, inputEl, message) {
+        const field = document.getElementById(fieldId);
+        field.querySelector('.field-error-text').textContent = message;
+        field.classList.add('show');
+        inputEl.classList.add('input-error');
+      }
+
+      function clearError(fieldId, inputEl) {
+        const field = document.getElementById(fieldId);
+        field.classList.remove('show');
+        inputEl.classList.remove('input-error');
+      }
+
+      function showAlert(type, message) {
+        alertBox.className = `alert show ${type}`;
+        alertBox.textContent = message;
+      }
+
+      function hideAlert() {
+        alertBox.className = 'alert';
+      }
+
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        hideAlert();
+        clearError('email-field', emailEl);
+        clearError('password-field', passwordEl);
+
+        const email = emailEl.value.trim();
+        const password = passwordEl.value;
+        let hasError = false;
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {
+          showError('email-field', emailEl, 'Please enter your email.');
+          hasError = true;
+        } else if (!emailRegex.test(email)) {
+          showError('email-field', emailEl, 'That email doesn\'t look right.');
+          hasError = true;
+        }
+
+        if (!password) {
+          showError('password-field', passwordEl, 'Please enter your password.');
+          hasError = true;
+        } else if (password.length < 6) {
+          showError('password-field', passwordEl, 'Password must be at least 6 characters.');
+          hasError = true;
+        }
+
+        if (hasError) return;
+
+        submitButton.disabled = true;
+        spinner.style.display = 'block';
+        buttonLabel.textContent = 'Logging in...';
+
+        // Simulate network request
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // Let's accept anything for demo purposes, or standard demo credentials
+        const loginSuccessful = (email === 'demo@enviroshield.ai' && password === 'password123') || (email && password);
+
+        if (loginSuccessful) {
+          localStorage.setItem('enviroshield_authenticated', 'true');
+          localStorage.setItem('enviroshield_user', email);
+
+          submitButton.classList.add('success');
+          spinner.style.display = 'none';
+          buttonLabel.textContent = 'Success!';
+
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 600);
+        } else {
+          submitButton.disabled = false;
+          spinner.style.display = 'none';
+          buttonLabel.textContent = 'Log In';
+          showAlert('error', "Your email or password doesn't look right. Please try again.");
+        }
+      });
+
+      function handleGoogleCredential(response) {
+        localStorage.setItem('enviroshield_authenticated', 'true');
+        localStorage.setItem('enviroshield_auth_method', 'google');
+        window.location.href = '/';
+      }
+
+      window.addEventListener('load', function () {
+        if (typeof google !== 'undefined' && google.accounts) {
+          google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleCredential,
+            ux_mode: 'popup'
+          });
+
+          document.getElementById('google-btn').addEventListener('click', function () {
+            if (GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID') {
+              // Just login directly for demo if no Client ID is provided
+              localStorage.setItem('enviroshield_authenticated', 'true');
+              window.location.href = '/';
+              return;
+            }
+            google.accounts.id.prompt();
+          });
+        } else {
+          // If google SDK fails to load, just mock login on click
+          document.getElementById('google-btn').addEventListener('click', function () {
+            localStorage.setItem('enviroshield_authenticated', 'true');
+            window.location.href = '/';
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
