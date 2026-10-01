@@ -1,0 +1,19 @@
+:name: EnviroShield AI
+:description: EnviroShield AI STM32H753 Renode simulation
+
+$elf?="C:\Users\mogal\zephyrproject\enviroshield\build\zephyr\zephyr.elf"
+
+mach create "EnviroShield AI"
+
+machine LoadPlatformDescription @C:\Users\mogal\zephyrproject\enviroshield\stm32h7_enviroshield.repl
+
+showAnalyzer sysbus.usart2
+
+emulation CreateServerSocketTerminal 12345 "cloudUart" false
+connector Connect sysbus.usart3 cloudUart
+
+sysbus LoadELF $elf
+cpu EnableZephyrMode "CONFIG_TICKLESS_KERNEL"
+cpu VectorTableOffset `sysbus GetSymbolAddress "_vector_table"`
+
+start
