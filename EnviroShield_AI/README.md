@@ -1,318 +1,218 @@
-# 🌍 EnviroShield AI
+# EnviroShield AI
 
-**AI-Powered Environmental Monitoring & Early Warning System**
+EnviroShield AI is an offline-first disaster awareness and evacuation application. It combines a stored Peddapuram-area road graph, live or cached telemetry, hazard zones, shelter and closure data, and GPS-aware route guidance in a mobile-friendly dashboard.
 
-EnviroShield AI is a smart environmental monitoring system designed to detect and monitor environmental hazards such as **flooding, forest fires, air pollution, and abnormal environmental conditions**.
+The repository contains a React/TanStack web application that can also be built and run as an Android app through Capacitor.
 
-The project combines **IoT sensors, embedded systems, real-time data processing, AI-based analysis, and a web dashboard** to provide early warnings and help users understand changing environmental conditions.
+## Implemented Features
 
----
+- Tabbed dashboard for Home, Map, Alerts, and Profile views
+- Live and cached environmental telemetry
+- Flood, air, water, and earthquake risk evaluation
+- Hazard zones and road-closure visualization
+- Offline map and route data cached locally
+- Safe-place recommendations and route safety scoring
+- Browser/device GPS support through Capacitor Geolocation
+- Local WebSocket updates from a telemetry backend
+- Supabase synchronization and realtime updates when configured
+- PWA support and Android/Capacitor project files
+- Renode simulation assets and a serial-to-backend telemetry bridge
+- SOS sharing/copy actions and a disaster monitoring hub
+- Demo authentication backed by browser local storage
 
-## 🚨 Problem
+## Technology Stack
 
-Environmental hazards can develop quickly, and delayed information can make it difficult to respond on time.
+### Application
 
-Traditional monitoring systems may depend on manual observation or isolated sensors. EnviroShield AI aims to bring sensor data into a single monitoring platform where environmental conditions can be observed and potential hazards can be identified earlier.
+- React 19
+- TanStack Start and TanStack Router
+- TypeScript
+- Vite 8
+- Tailwind CSS
+- Radix UI and Recharts
+- PWA plugin
 
----
+### Platform and Data
 
-## 💡 Our Solution
+- Capacitor 8 for Android
+- Supabase for optional cloud dataset and realtime telemetry
+- Browser storage for cached datasets and profile data
+- WebSocket and HTTP connections for local telemetry
+- Local backend/SQLite pipeline in a separate environment
 
-EnviroShield AI collects environmental data from sensors and sends it to a backend system for processing.
+### Simulation
 
-The processed information is displayed through a web dashboard with:
+- Renode
+- STM32/Zephyr platform files
+- Python serial bridge
 
-* 📊 Real-time sensor readings
-* 🚨 Hazard alerts
-* 🌊 Flood-level monitoring
-* 🔥 Fire/environmental hazard detection
-* 🌱 Environmental condition monitoring
-* 📈 Historical/replayed sensor data
-* 🖥️ Web-based monitoring dashboard
-
-The system can also be demonstrated using **Renode**, allowing sensor values and embedded-system behavior to be tested without depending completely on physical hardware.
-
----
-
-## 🏗️ System Architecture
-
-```text
-┌─────────────────────┐
-│   Physical Sensors  │
-│                     │
-│  Ultrasonic Sensor  │
-│  Environmental      │
-│  Sensors            │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│ Embedded Controller │
-│                     │
-│ Arduino / ESP32 /   │
-│ STM32 / Zephyr      │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│   Data Processing   │
-│      Backend        │
-│                     │
-│ API + Processing    │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│    AI / Analysis    │
-│                     │
-│ Risk Detection &    │
-│ Alert Generation    │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│    Web Dashboard    │
-│                     │
-│ Sensors | Alerts    │
-│ Monitoring | Status │
-└─────────────────────┘
-```
-
----
-
-## 🔧 Hardware
-
-The prototype can be demonstrated using embedded hardware and sensors such as:
-
-* Microcontroller development board
-* HC-SR04 ultrasonic sensor
-* LEDs for status indication
-* Buzzer for alerts
-* Environmental sensors where available
-
-The hardware layer is responsible for collecting sensor values and communicating them to the monitoring system.
-
----
-
-## 🧪 Renode Simulation
-
-EnviroShield AI also uses **Renode** for embedded-system simulation and repeatable demonstrations.
-
-Renode makes it possible to test the embedded application and simulate sensor-related scenarios without requiring physical hardware for every test.
-
-Example workflow:
-
-```text
-Renode
-   ↓
-Virtual Sensor Values
-   ↓
-Embedded Application
-   ↓
-Backend / Serial Bridge
-   ↓
-EnviroShield Dashboard
-```
-
-This approach is useful for development, testing, debugging, and demonstrations.
-
----
-
-## 💻 Software Stack
-
-### Frontend
-
-* React
-* JavaScript
-* HTML
-* CSS
-* Vite
-
-### Backend
-
-* Node.js
-* Express.js
-* REST APIs
-
-### Database
-
-* MongoDB
-
-### Embedded / Simulation
-
-* Zephyr RTOS
-* Renode
-* Microcontroller-based hardware
-
-### AI Layer
-
-The AI layer can be used to analyze environmental readings, identify abnormal patterns, and support hazard-risk alerts.
-
----
-
-## 📊 Dashboard
-
-The dashboard is designed to provide a simple view of the current environmental status.
-
-It can include:
-
-* Sensor readings
-* Current hazard status
-* Alert notifications
-* System status
-* Historical data
-* Environmental trends
-* Simulation/replay information
-
----
-
-## 🔔 Alert System
-
-When sensor values cross configured thresholds or abnormal patterns are detected, the system can generate an alert.
-
-Example:
-
-```text
-Normal
-   ↓
-Sensor value increases
-   ↓
-Threshold / abnormal condition detected
-   ↓
-Risk analysis
-   ↓
-Warning generated
-   ↓
-Dashboard + Alert notification
-```
-
----
-
-## 📁 Project Structure
+## Repository Structure
 
 ```text
 EnviroShield_AI/
-│
-├── frontend/              # Web dashboard
-│
-├── backend/               # Server and APIs
-│
-├── embedded/              # Embedded/Zephyr application
-│
-├── renode/                # Renode simulation files
-│
-├── docs/                  # Project documentation
-│
-└── README.md
+├── android/                 # Generated Android/Capacitor project
+├── public/                  # Icons, manifest, logo, login page
+├── renode/                  # Renode platform and simulation files
+├── src/
+│   ├── components/          # Dashboard, map, alert, and UI components
+│   ├── data/                # Bundled Peddapuram map and city data
+│   ├── integrations/
+│   │   └── supabase/        # Supabase client and authentication helpers
+│   ├── lib/                 # Routing, sync, telemetry, cache, and risk logic
+│   ├── routes/              # TanStack route components
+│   ├── router.tsx
+│   ├── server.ts
+│   └── styles.css
+├── supabase/
+│   └── migrations/          # Database schema migrations
+├── work/                    # Saved map and bridge status data
+├── .env.example             # Local environment variable template
+├── capacitor.config.ts
+├── package.json
+└── vite.config.ts
 ```
 
-> Folder names may differ depending on the current implementation of the project.
+## Risk and Routing Logic
 
----
+The application uses a local rule-based engine rather than a downloaded machine-learning model.
 
-## 🚀 Getting Started
+- `src/lib/ai-monitor.ts` evaluates available telemetry and data quality.
+- `src/lib/intelligence.ts` merges live closures and ranks safe destinations.
+- `src/lib/routing.ts` calculates routes over the bundled road graph.
+- `src/lib/sync.ts` synchronizes or caches disaster datasets.
+- `src/lib/local-cache.ts` stores offline data locally.
+- `src/lib/forest-fire.ts` provides forest-fire telemetry processing.
 
-### 1. Clone the repository
+The risk results are designed to support demonstrations and local monitoring. They should not replace official emergency alerts or public safety guidance.
+
+## Getting Started
+
+The repository is the app directory when it is opened as a project. Run the application from the directory containing `package.json`.
+
+### Prerequisites
+
+- Node.js 20 or newer
+- npm
+- Android Studio for Android builds
+- Optional: a local telemetry backend on port `3001`
+- Optional: a configured Supabase project
+
+### Install and Run
 
 ```bash
-git clone <YOUR_REPOSITORY_URL>
 cd EnviroShield_AI
-```
-
-### 2. Install frontend dependencies
-
-```bash
-cd frontend
 npm install
-```
-
-### 3. Start the frontend
-
-```bash
 npm run dev
 ```
 
-### 4. Install backend dependencies
+Open the URL printed by Vite. The app redirects unauthenticated users to `public/login.html`.
 
-Open another terminal:
-
-```bash
-cd backend
-npm install
-```
-
-### 5. Start the backend
+### Production Build
 
 ```bash
-npm run dev
+npm run build
+npm run preview
 ```
 
-The exact commands may vary depending on the final project configuration.
+## Environment Variables
 
----
+Copy `.env.example` to `.env` and provide values from your environment:
 
-## 🧪 Testing with Renode
+```bash
+cp .env.example .env
+```
 
-If the Renode simulation environment is configured:
+Environment variables must use the names shown in `.env.example`. Never commit `.env` or private service-role credentials.
 
-1. Open the Renode project.
-2. Load the required `.resc` script.
-3. Start the embedded application.
-4. Provide or simulate sensor values.
-5. Monitor the generated data.
-6. Observe the corresponding status and alerts on the dashboard.
+Supabase publishable keys are browser-accessible configuration values, not server secrets. Any privileged database operations must use server-only environment variables and enforce Row-Level Security.
 
----
+## Authentication Note
 
-## 🎯 Key Features
+The current login flow is a demonstration. It stores an authentication flag in `localStorage` and has not been implemented as a production identity provider.
 
-* 🌍 Environmental monitoring
-* 🌊 Flood-level monitoring
-* 🔥 Hazard detection
-* 📡 Sensor-based data collection
-* 🤖 AI-assisted environmental analysis
-* 🚨 Early warning alerts
-* 📊 Interactive dashboard
-* 🧪 Renode-based simulation
-* 🔄 Sensor-data replay/testing
-* 💻 Web-based monitoring
+Before deploying publicly, authentication should be replaced or extended with:
 
----
+- Server-validated sessions
+- Supabase Auth or another identity provider
+- Secure session storage
+- Authorization checks in database policies
+- Proper logout and account recovery flows
 
-## 🔮 Future Scope
+## Live Telemetry
 
-Possible future improvements include:
+The dashboard attempts to retrieve telemetry in this order:
 
-* Integration of additional environmental sensors
-* More advanced AI-based anomaly detection
-* Machine-learning-based risk prediction
-* Cloud deployment
-* Mobile application
-* SMS and emergency notification integration
-* Larger-scale IoT sensor networks
-* GIS/map-based environmental monitoring
-* Long-term environmental data analysis
+1. Local HTTP backend at `localhost:3001`
+2. Supabase `sensor_telemetry` table
+3. Cached/offline application data
 
----
+On Android/Capacitor, the local backend address is translated to `10.0.2.2:3001` for the emulator or supported device network configuration.
 
-## 🌱 Vision
+The app also opens a local WebSocket connection and listens for:
 
-The goal of EnviroShield AI is to create a scalable monitoring platform that connects **sensors, embedded systems, AI, and real-time dashboards** to support faster awareness of environmental hazards.
+- `telemetry_update`
+- `alert_new`
 
-> **Sense. Analyze. Alert. Protect.**
+When Supabase is available, it can receive realtime inserts and updates from `sensor_telemetry`.
 
----
+## Android Build
 
-## 👥 Team
+```bash
+npm run build
+npx cap sync android
+npx cap open android
+```
+
+To run directly from a configured Android environment:
+
+```bash
+npx cap run android
+```
+
+## Renode Pipeline
+
+The repository includes Renode and Zephyr-related assets for simulation. The run procedure and verified test values are documented in `RUNBOOK.md`.
+
+A separate local backend, serial bridge, and Renode configuration are required for the complete hardware/simulation pipeline.
+
+## Scripts
+
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Start the Vite development server |
+| `npm run build` | Create the production build |
+| `npm run preview` | Preview the built application |
+| `npm run lint` | Run ESLint |
+| `npm run format` | Format project files with Prettier |
+
+## Testing
+
+A telemetry-risk unit test is included:
+
+```bash
+npm run lint
+node --test src/lib/telemetry-risk.test.ts
+```
+
+The existing `RUNBOOK.md` also contains a live Renode-to-application verification procedure.
+
+## Documentation
+
+- `README.md` — Project overview and setup
+- `RUNBOOK.md` — Verified live telemetry pipeline commands
+- `INTEGRATION.md` — Login and FloodSafe integration behavior
+- `supabase/migrations/` — Supabase database schema
+
+## Security
+
+- Do not commit `.env` files or private keys
+- Keep service-role keys on trusted server environments only
+- Protect Supabase tables with appropriate Row-Level Security policies
+- Replace demo credentials before public deployment
+- Regenerate any API keys that have already been committed
+
+## Team
 
 **Team:** FRIENDS
 
-**Project:** EnviroShield AI
-
-Developed as a technology solution for environmental monitoring and early-warning use cases.
-
----
-
-## 📜 License
-
-This project is developed for educational, research, and demonstration purposes.
+The repository is maintained for educational, research, and environmental-awareness demonstration purposes.
